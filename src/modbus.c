@@ -201,6 +201,7 @@ static int send_msg(modbus_t *ctx, uint8_t *msg, int msg_length)
 
     if (rc > 0 && rc != msg_length) {
         errno = EMBBADDATA;
+        printf("EMBBADDATA:: (%d) not equal (%d)\n", rc, msg_length);
         return -1;
     }
 
@@ -450,6 +451,7 @@ int _modbus_receive_msg(modbus_t *ctx, uint8_t *msg, msg_type_t msg_type)
                     ctx, msg, msg_type);
                 if ((msg_length + length_to_read) > (int)ctx->backend->max_adu_length) {
                     errno = EMBBADDATA;
+                    printf("EMBBADDATA::too many data (%d)\n", (int)ctx->backend->max_adu_length);
                     _error_print(ctx, "too many data");
                     return -1;
                 }
@@ -569,6 +571,7 @@ static int check_confirmation(modbus_t *ctx, uint8_t *req,
                 modbus_flush(ctx);
             }
             errno = EMBBADDATA;
+            printf("EMBBADDATA:: Received function not corresponding ");
             return -1;
         }
 
@@ -620,6 +623,7 @@ static int check_confirmation(modbus_t *ctx, uint8_t *req,
             }
 
             errno = EMBBADDATA;
+            printf("EMBBADDATA:: Quantity not corresponding to the request ");
             rc = -1;
         }
     } else {
@@ -633,6 +637,7 @@ static int check_confirmation(modbus_t *ctx, uint8_t *req,
             modbus_flush(ctx);
         }
         errno = EMBBADDATA;
+        printf("EMBBADDATA:: Message length not corresponding to the computed length");
         rc = -1;
     }
 
