@@ -631,13 +631,16 @@ static int check_confirmation(modbus_t *ctx, uint8_t *req,
             fprintf(stderr,
                     "Message length not corresponding to the computed length (%d != %d)\n",
                     rsp_length, rsp_length_computed);
+            printf( "Message length not corresponding to the computed length (%d != %d)\n",
+                    rsp_length, rsp_length_computed);
         }
         if (ctx->error_recovery & MODBUS_ERROR_RECOVERY_PROTOCOL) {
             _sleep_response_timeout(ctx);
             modbus_flush(ctx);
+            printf("ERROR RECOVERY\n");
         }
         errno = EMBBADDATA;
-        printf("EMBBADDATA:: Message length not corresponding to the computed length");
+        printf("EMBBADDATA:: Message length not corresponding to the computed length\n");
         rc = -1;
     }
 
